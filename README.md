@@ -1,2 +1,3 @@
 # it-challenge-backend
-The backend for our school project
+
+I will add the instructions for running the backend here once done.
