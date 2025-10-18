@@ -1,81 +1,14 @@
-# IT Challenge Backend
+# it-challenge-backend
 
-Express + Prisma + PostgreSQL backend with a clean, scalable file structure.
+Tu budem dávať inštrukcie na run-ovanie backendu a podobné veci. Očakávajte gramatické chybya
 
-## Project Structure
+# Spojenie GIT a VSCode:
 
-```
-src/
-  config/
-    env.js               # Loads env vars, shared config
-  controllers/
-    user.controller.js   # Example controller using Prisma
-  middleware/
-    errorHandler.js      # Central error handler
-  routes/
-    health.routes.js     # GET /api/health
-    user.routes.js       # /api/users endpoints
-  prisma.js              # Prisma client singleton
-  server.js              # App bootstrap
-prisma/
-  schema.prisma          # Database schema (source of truth)
-  seed.js                # Optional seed script
-.env.example             # Template for environment variables
-```
+(Očakávam že si logged in do GitHub účtu na VSCode. Ak nie, najdi youtube tutoriál, skill issue) 
 
-## Getting Started
-
-1. Install dependencies
-
-```bash
-npm install
-```
-
-2. Create your .env from the example and configure the database
-
-```bash
-cp .env.example .env
-# Edit .env and set DATABASE_URL to your local Postgres
-```
-
-3. Create and migrate the database
-
-```bash
-npm run migrate -- --name init
-```
-
-4. Generate Prisma client (optional, migration runs it too)
-
-```bash
-npm run generate
-```
-
-5. Start the server
-
-```bash
-npm run dev
-# or
-npm start
-```
-
-6. Try the endpoints
-
-```bash
-# Health
-curl http://localhost:3000/api/health
-
-# Users (empty list initially)
-curl http://localhost:3000/api/users
-
-# Create a user
-curl -X POST http://localhost:3000/api/users \
-  -H "Content-Type: application/json" \
-  -d '{"email":"test@example.com","name":"Test User"}'
-```
-
-## Notes
-
-- Migrations are the source of truth for schema changes. On a fresh clone: `npm install && npm run migrate`.
-- Use `npm run studio` to open Prisma Studio to inspect your DB.
-- Configure CORS via `CORS_ORIGIN` in `.env`.
-- In production, run `npm run deploy:migrations` before starting the app.
+1. Klikni Source Control (tretí tab od hora, v sidebar-e na ľavo)
+2. Click "Initialise Repository"
+3. Objaví sa "Changes". Hoverni na to, objavia sa 3 bodky napravo od toho. Remote -> Add Remote
+4. Promptne ťa možno o link, možno o prijamy výber. Tam daj URL na toto repo (https://github.com/shiftyboi1/it-challenge-backend). Ak toto nefunguje, jeden z nás je debil.
+5. Poprosí vas o name, MUSÍTE ho pomenovať "origin"
+6. Si connected. Teraz, pod "Changes" nájdeš graph. **Najprv klikni FETCH, potom PULL. TOTO JE POVINNÉ. Ak toto nespravíš, dlžíš mi 10€**
