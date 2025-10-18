@@ -1,0 +1,42 @@
+{
+  "name": "itchallenge",
+  "version": "1.0.0",
+  "description": "IT Challenge Backend - Express + Prisma + PostgreSQL",
+  "main": "src/server.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js",
+    "migrate": "prisma migrate dev",
+    "deploy:migrations": "prisma migrate deploy",
+    "generate": "prisma generate",
+    "studio": "prisma studio",
+    "lint": "echo 'No linter configured'",
+    "test": "echo 'No tests yet'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shiftyboi1/it-challenge-backend.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/shiftyboi1/it-challenge-backend/issues"
+  },
+  "homepage": "https://github.com/shiftyboi1/it-challenge-backend#readme",
+  "dependencies": {
+    "@prisma/client": "^6.17.1",
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2"
+  },
+  "devDependencies": {
+    "prisma": "^6.17.1"
+  },
+  "prisma": {
+    "seed": "node prisma/seed.js"
+  }
+}
