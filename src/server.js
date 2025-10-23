@@ -41,6 +41,9 @@ function requireAuth(req, res, next) {
     // Dáva do req.user payload z tokenu, teda info o userovi
     // req.user.sub = user ID
     // req.user.email = user email
+
+    // TODO: Only save mail, not ID, so i can change user emails if needed
+    // TODO: Also save roles/permissions in token you utter bollocks
     const payload = jwt.verify(token, cfg.jwtSecret);
     req.user = payload;
     next();
