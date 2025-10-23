@@ -6,6 +6,7 @@ const errorHandler = require('./middleware/errorHandler');
 const healthRoutes = require('./routes/health.routes');
 const userRoutes = require('./routes/user.routes');
 const authRoutes = require('./routes/auth.routes');
+const cartRoutes = require('./routes/cart.routes');
 const jwt = require('jsonwebtoken');
 const cfg = require('./config/env');
 
@@ -20,6 +21,7 @@ app.use(express.json());
 app.use('/api', healthRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
+app.use('/api/cart', cartRoutes);
 
 // Defaultná route, ak niekto niečo poserie + na testing či funguje
 app.get('/', (req, res) => {

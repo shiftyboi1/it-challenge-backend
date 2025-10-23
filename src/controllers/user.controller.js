@@ -32,7 +32,7 @@ module.exports = {
 
   async create(req, res, next) {
     try {
-      const { email, name, password } = req.body;
+      const { email, name, password, type } = req.body;
 
       if (!email) {
         const error = new Error('Prosíme zadajte email');
@@ -57,7 +57,7 @@ module.exports = {
       const passwordHash = await bcrypt.hash(password, 12);
 
       const user = await prisma.user.create({
-        data: { email, name, passwordHash },
+        data: { email, name, passwordHash, type: type || 'user' },
         select: { id: true, email: true, name: true, createdAt: true, updatedAt: true },
       });
       res.status(201).json(user);

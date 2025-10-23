@@ -12,6 +12,31 @@ model User {
   email     String   @unique
   name      String
   passwordHash String
+  type      String   @default("user")
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  cartItems ShoppingCart[]
+}
+
+model Product {
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String
+  cost        Float
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  cartItems   ShoppingCart[]
+}
+
+model ShoppingCart {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  productId Int
+  amount    Int      @default(1)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  @@unique([userId, productId])
 }
