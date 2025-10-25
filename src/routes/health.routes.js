@@ -1,4 +1,4 @@
-// Checkuje stav servera. Môj util endpoint, dw abt it
+// Checkuje stav servera. Môj util a hlavne testing endpoint, dw abt it
 const { Router } = require('express');
 
 const router = Router();

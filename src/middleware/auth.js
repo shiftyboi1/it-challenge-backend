@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 const config = require('../config/env');
 
-// Middleware to verify JWT token and attach user info to request
+// Middleware na verifikáciu JWT tokenu a savenutie usera do reqestu
 function requireAuth(req, res, next) {
   try {
     const authHeader = req.headers.authorization;
@@ -12,11 +12,10 @@ function requireAuth(req, res, next) {
       throw error;
     }
 
-    const token = authHeader.substring(7); // Remove 'Bearer ' prefix
+    const token = authHeader.substring(7); // Odstran 'Bearer '
 
     const decoded = jwt.verify(token, config.jwtSecret);
 
-    // Attach user info to request object
     req.user = {
       id: decoded.sub,
       email: decoded.email,

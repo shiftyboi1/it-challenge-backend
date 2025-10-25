@@ -1,5 +1,5 @@
-// Centralized error handling middleware
-// Errors are handled HERE
+// Centralizovany error handling middleware
+// tuten chlap handluje errory
 module.exports = function errorHandler(err, req, res, next) {
   console.error(err);
 
@@ -9,7 +9,7 @@ module.exports = function errorHandler(err, req, res, next) {
   res.status(status).json({
     error: {
       message,
-      // Avoid leaking stack in production (security reasons)
+      // Odstrani stack trace ked runuje v production (aby frontend nevidel do pana serverika)
       ...(process.env.NODE_ENV !== 'production' && { stack: err.stack }),
     },
   });

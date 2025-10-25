@@ -15,7 +15,7 @@ const config = {
 };
 
 if (!config.databaseUrl) {
-  // Warn in dev; in prod I will throw
+  // Warn v dev; v prod thrownem error eventuelne
   console.warn('[config] DATABASE_URL is not set. Set it in your .env file.');
 }
 

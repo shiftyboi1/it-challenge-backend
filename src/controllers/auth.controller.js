@@ -3,6 +3,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const config = require('../config/env');
 
+// Ani sa ma nepytaj jak to funguje je to cursed ale funguje to to je hlavne
 module.exports = {
   async login(req, res, next) {
     try {
