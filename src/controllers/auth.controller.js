@@ -29,14 +29,14 @@ module.exports = {
       }
 
       const token = jwt.sign(
-        { sub: user.id, email: user.email, type: user.type },
+        { sub: user.id, email: user.email, role: user.role },
         config.jwtSecret,
         { expiresIn: config.jwtExpiresIn }
       );
 
       res.json({
         token,
-        user: { id: user.id, email: user.email, name: user.name, type: user.type },
+        user: { id: user.id, email: user.email, name: user.name, role: user.role },
       });
     } catch (err) {
       next(err);

@@ -19,7 +19,7 @@ function requireAuth(req, res, next) {
     req.user = {
       id: decoded.sub,
       email: decoded.email,
-      type: decoded.type,
+      role: decoded.role,
     };
 
     next();
@@ -35,4 +35,17 @@ function requireAuth(req, res, next) {
   }
 }
 
-module.exports = { requireAuth };
+// Middleware čo checkuje ci user má nejakú z required rolí
+function requireRole(allowedRoles) {
+  return (req, res, next) => {
+    if (!req.user) {
+      return res.status(401).json({ error: 'Unauthenticated' });
+    }
+    if (!allowedRoles.includes(req.user.role)) {
+      return res.status(403).json({ error: 'Forbidden: insufficient permissions' });
+    }
+    next();
+  };
+}
+
+module.exports = { requireAuth, requireRole };
