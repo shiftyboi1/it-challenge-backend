@@ -13,6 +13,12 @@ enum Role {
   ADMIN
 }
 
+enum OrderStatus {
+  PROCESSING
+  FULFILLED
+  CANCELLED
+}
+
 model User {
   id           Int      @id @default(autoincrement())
   email        String   @unique
@@ -39,14 +45,14 @@ model ShoppingCart {
 }
 
 model Order {
-  id        Int      @id @default(autoincrement())
+  id        Int         @id @default(autoincrement())
   userId    Int
   total     Float
-  status    String   @default("pending") // pending, completed, cancelled
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  status    OrderStatus @default(PROCESSING)
+  user      User        @relation(fields: [userId], references: [id], onDelete: Cascade)
   items     OrderItem[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
 }
 
 model OrderItem {

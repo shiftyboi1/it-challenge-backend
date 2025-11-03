@@ -94,13 +94,9 @@ Query je v parametroch URL. (viď "page" "role" atď v samotnej URL).
 }
 ```
 
-### Spravca + Admin
-
-**`GET /api/orders`** - Všetky objednávky (žiadne body)
-
 ### User routes (cart, atď.) (Tiež podľa tokenu)
 
-**`GET /api/cart`** - Tvoj košík (žiadne body)
+**`GET /api/cart`** - Košík aktuálneho usera (žiadne body)
 
 **`POST /api/cart`** - Pridaj do košíka
 ```json
@@ -109,6 +105,28 @@ Query je v parametroch URL. (viď "page" "role" atď v samotnej URL).
   "amount": 2
 }
 ```
+
+### User routes (orders)
+
+**`POST /api/orders`** - Vytvor objednávku z košíka (tzv. checkout)
+Automaticky vezme košík, vytvorí order a vyprázdni košík. (nemá body)
+
+**`GET /api/orders/my`** - Tvoje objednávky (žiadne body)
+
+**`GET /api/orders/:id`** - Detail konkrétnej objednávky (napr. /api/orders/5)
+User vidí len svoje, admin/spravca môžu vidieť ľubovoľnú. (žiadne body)
+
+### Spravca + Admin
+
+**`GET /api/orders`** - Všetky objednávky (žiadne body)
+
+**`PATCH /api/orders/:id/status`** - Zmeň status objednávky (napr. /api/orders/5/status)
+```json
+{
+  "status": "FULFILLED"
+}
+```
+Statusy môžu byť len: FULFILLED, CANCELLED, PROCESSING
 
 ## Poznamky
 
