@@ -15,6 +15,9 @@ router.post('/', userController.create);
 // Admin-only routy
 // Použitý na list userov a na zmenu roly
 router.get('/', requireAuth, requireRole(['ADMIN']), userController.list);
+router.patch('/:id', requireAuth, requireRole(['ADMIN']), userController.update); // update name/email
 router.patch('/:id/role', requireAuth, requireRole(['ADMIN']), userController.updateRole);
+router.patch('/:id/password', requireAuth, requireRole(['ADMIN']), userController.resetPassword);
+router.delete('/:id', requireAuth, requireRole(['ADMIN']), userController.remove);
 
 module.exports = router;

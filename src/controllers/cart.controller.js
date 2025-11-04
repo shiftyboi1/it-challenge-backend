@@ -75,13 +75,9 @@ module.exports = {
         throw error;
       }
 
+      // find the cart item for this user/product
       const cartItem = await prisma.shoppingCart.findUnique({
-        where: {
-          userId_productId: {
-            userId: userId,
-            productId: productId,
-          },
-        },
+        where: { userId_productId: { userId, productId } },
       });
 
       if (!cartItem) {
@@ -122,24 +118,13 @@ module.exports = {
         throw error;
       }
 
-      const cartItem = await prisma.shoppingCart.findUnique({
-        where: {
-          userId_productId: {
-            userId: userId,
-            productId: productId,
-          },
-        },
-      });
-
+      const cartItem = await prisma.shoppingCart.findUnique({ where: { userId_productId: { userId, productId } } });
       if (!cartItem) {
         const error = new Error('Item not in cart');
         error.status = 404;
         throw error;
       }
-
-      await prisma.shoppingCart.delete({
-        where: { id: cartItem.id },
-      });
+      await prisma.shoppingCart.delete({ where: { id: cartItem.id } });
 
       res.json({ message: 'All items removed from cart' });
     } catch (err) {

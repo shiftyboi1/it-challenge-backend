@@ -46,7 +46,7 @@ async function main() {
         },
         {
           id: 'tricko',
-          name: 'HoloHome Tričko',
+          name: 'Tričko HoloHome',
           description:
             'Kvalitné tričko s minimalistickým logom.',
           cost: 24.90,
@@ -69,7 +69,7 @@ async function main() {
           id: 'pohar',
           name: 'Pohár HoloHome',
           description:
-            'Sklenený pohár v troch farbách.',
+            'Sklenený pohár s inovatívnym dizajnom.',
           cost: 12.90,
         }
       ],

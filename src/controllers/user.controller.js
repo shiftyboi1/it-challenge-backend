@@ -46,6 +46,51 @@ module.exports = {
     }
   },
 
+  // Admin only: update basic user info (name, email)
+  async update(req, res, next) {
+    try {
+      const targetUserId = parseInt(req.params.id);
+      const { name, email } = req.body;
+
+      if (!name && !email) {
+        const error = new Error('Nothing to update');
+        error.status = 400;
+        throw error;
+      }
+
+      // Ensure user exists
+      const targetUser = await prisma.user.findUnique({ where: { id: targetUserId } });
+      if (!targetUser) {
+        const error = new Error('User not found');
+        error.status = 404;
+        throw error;
+      }
+
+      // If changing email, ensure uniqueness
+      if (email && email !== targetUser.email) {
+        const existing = await prisma.user.findUnique({ where: { email } });
+        if (existing) {
+          const error = new Error('Email už obsadený');
+          error.status = 409;
+          throw error;
+        }
+      }
+
+      const updated = await prisma.user.update({
+        where: { id: targetUserId },
+        data: {
+          ...(name != null ? { name } : {}),
+          ...(email != null ? { email } : {}),
+        },
+        select: { id: true, email: true, name: true, role: true, updatedAt: true },
+      });
+
+      res.json(updated);
+    } catch (err) {
+      next(err);
+    }
+  },
+
   async exists(req, res, next) {
     try {
       const { email } = req.query;
@@ -138,6 +183,79 @@ module.exports = {
       });
 
       res.json(updated);
+    } catch (err) {
+      next(err);
+    }
+  },
+
+  // Admin only: reset another user's password
+  async resetPassword(req, res, next) {
+    try {
+      const targetUserId = parseInt(req.params.id);
+      const { password } = req.body;
+
+      if (!password || password.length < 8) {
+        const error = new Error('Heslo musí byť aspoň 8 znakov dlhé');
+        error.status = 400;
+        throw error;
+      }
+
+      // Ensure target exists
+      const targetUser = await prisma.user.findUnique({ where: { id: targetUserId } });
+      if (!targetUser) {
+        const error = new Error('User not found');
+        error.status = 404;
+        throw error;
+      }
+
+      // Optional: Do not allow resetting password for ADMIN users other than self
+      // Allow admins to reset any non-admin, and self if needed
+      if (targetUser.role === 'ADMIN' && req.user.id !== targetUserId) {
+        const error = new Error('Cannot reset password for another admin');
+        error.status = 403;
+        throw error;
+      }
+
+      const passwordHash = await bcrypt.hash(password, 12);
+      await prisma.user.update({
+        where: { id: targetUserId },
+        data: { passwordHash },
+      });
+
+      res.json({ ok: true });
+    } catch (err) {
+      next(err);
+    }
+  },
+
+  // Admin only: delete user (safety guardrails)
+  async remove(req, res, next) {
+    try {
+      const targetUserId = parseInt(req.params.id);
+
+      const targetUser = await prisma.user.findUnique({ where: { id: targetUserId } });
+      if (!targetUser) {
+        const error = new Error('User not found');
+        error.status = 404;
+        throw error;
+      }
+
+      // Prevent deleting self
+      if (req.user.id === targetUserId) {
+        const error = new Error('Cannot delete your own account');
+        error.status = 403;
+        throw error;
+      }
+
+      // Prevent deleting ADMIN accounts
+      if (targetUser.role === 'ADMIN') {
+        const error = new Error('Cannot delete admin accounts');
+        error.status = 403;
+        throw error;
+      }
+
+      await prisma.user.delete({ where: { id: targetUserId } });
+      res.status(204).send();
     } catch (err) {
       next(err);
     }
