@@ -1,6 +1,6 @@
 # it-challenge-backend
 
-Express + Prisma + PostgreSQL backend s autentifikáciou, rolami a košíkom.
+Express + Prisma + PostgreSQL backend s autentifikáciou, rolami, produktami, košíkom a objednávkami.
 
 ## Spojenie GIT a VSCode
 
@@ -13,7 +13,7 @@ Express + Prisma + PostgreSQL backend s autentifikáciou, rolami a košíkom.
 5. Poprosí vas o name, MUSÍTE ho pomenovať "origin"
 6. Si connected. Teraz, pod "Changes" nájdeš graph. **Najprv klikni FETCH, potom PULL. TOTO JE POVINNÉ. Ak toto nespravíš, dlžíš mi 10€**
 
-## Setup projektu
+## Setup projektu (Quickstart)
 
 (Hádam, že máš installed Node (kvôli Node Package Manageri, teda NPM) (youtube tutorial) ako aj PostgreSQL)
 ROB TOTO V SPRÁVNOM ADRESÁRY/PRIEČINKU.
@@ -24,6 +24,7 @@ npm install
 ```
 
 2. Skopíruj `.env.example` do `.env` a nastav hodnoty (Uprav DATABASE_URL, JWT_SECRET atď.)
+  - `CORS_ORIGIN` nastav na URL frontend-u (napr. `http://localhost:5173`) ak chceš obmedziť prístup.
 
 3. Spusti migrácie (vytvorí tabuľky v DB):
 ```bash
@@ -31,7 +32,7 @@ npm run migrate -- --name init
 # name je meno migracie (pochop ako "meno zmeny db". davam init lebo je to "initial")
 ```
 
-4. Seed-ni admin usera (tvorí usera s admin rolou, aby si sa nemusel connectovať na db a manualne meniť veci):
+4. Seed-ni admin usera a demo produkty (tvorí usera s admin rolou a vloží základné produkty):
 ```bash
 npx prisma db seed
 # Admin: admin@itchallenge.com / admin123
@@ -78,9 +79,19 @@ Dávaj pozor, či ide o POST request, či GET request, či PATCH.
 
 **`GET /api/users/exists?email=...`** - Skontroluj či email existuje (query param, nie body)
 
+**`GET /api/products`** - Zoznam produktov (žiadne body)
+
+**`GET /api/products/:id`** - Detail produktu
+
 ### Protected (vyžaduje token)
 
 **`GET /api/me`** - Info o aktuálnom userovi z tokenu (nemá body)
+
+Autorizácia: posielaj hlavičku
+
+```
+Authorization: Bearer <token>
+```
 
 ### Admin only
 
@@ -98,13 +109,22 @@ Query je v parametroch URL. (viď "page" "role" atď v samotnej URL).
 
 **`GET /api/cart`** - Košík aktuálneho usera (žiadne body)
 
-**`POST /api/cart`** - Pridaj do košíka
+**`POST /api/cart/add`** - Pridaj kus produktu do košíka (alebo zvýš množstvo)
 ```json
-{
-  "productId": 1,
-  "amount": 2
-}
+{ "productId": 1 }
 ```
+
+**`POST /api/cart/remove`** - Odober kus produktu z košíka
+```json
+{ "productId": 1 }
+```
+
+**`POST /api/cart/remove-all`** - Odstráň všetky kusy konkrétneho produktu z košíka
+```json
+{ "productId": 1 }
+```
+
+**`DELETE /api/cart`** - Vyprázdni košík
 
 ### User routes (orders)
 
@@ -132,6 +152,14 @@ Statusy môžu byť len: FULFILLED, CANCELLED, PROCESSING
 
 - Passwords sú hashované bcryptom (12 rounds)
 - JWT tokeny obsahujú: `{ sub: userId, email, role }`
+- Token posielaj v hlavičke `Authorization: Bearer <token>`
 - Admin nemôže byť degradovaný inými adminmi
 - Users nemôžu meniť vlastnú rolu
 - Email search je case-insensitive partial match (proste si vyhladaj čo to znamená nebudem to rozpisovať)
+
+## Integrácia s frontendom
+
+- Frontend volá API s `VITE_API_URL` nastaveným na backend, napr. `http://localhost:3000/api`.
+- Produkty: `GET /api/products` poskytuje zoznam produktov používaný v shop-e.
+- Košík a objednávky vyžadujú prihlásenie. Frontend posiela `Authorization: Bearer <token>` po úspešnom logine.
+

@@ -8,6 +8,7 @@ const userRoutes = require('./routes/user.routes');
 const authRoutes = require('./routes/auth.routes');
 const cartRoutes = require('./routes/cart.routes');
 const orderRoutes = require('./routes/order.routes');
+const productRoutes = require('./routes/product.routes');
 const { requireAuth } = require('./middleware/auth');
 
 const app = express();
@@ -22,6 +23,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/cart', cartRoutes);
 app.use('/api/orders', orderRoutes);
+app.use('/api/products', productRoutes);
 
 // Defaultná route, ak niekto niečo poserie + na testing či funguje
 app.get('/', (req, res) => {
