@@ -1,3 +1,6 @@
+// Load .env before creating PrismaClient
+require('dotenv').config();
+
 const { PrismaClient } = require('@prisma/client');
 
 // Zaistí jediný PrismaClient instance (pre hot-reload v dev móde)
