@@ -44,6 +44,34 @@ async function main() {
             'HoloHome Enterprise je komplexný AI „virtuálny domovník“ pre bytové domy. Zabezpečuje hlavný aj vedľajšie vstupy, monitoruje pohyb v interiéri/exteriéri, zberá odpočty vody a tepla a sleduje kvalitu ovzdušia v spoločných priestoroch. Správcom prináša prehľad o zariadeniach a incidentoch, obyvateľom zvyšuje bezpečnosť a komfort a vďaka digitalizácii procesov znižuje prevádzkové náklady. S jednotnou identitou HoloHome pôsobí moderne, dôveryhodne a konzistentne naprieč všetkými materiálmi.',
           cost: 189.0,
         },
+        {
+          id: 'tricko',
+          name: 'HoloHome Tričko',
+          description:
+            'Kvalitné tričko s minimalistickým logom.',
+          cost: 24.90,
+        },
+        {
+          id: 'mikina-sm',
+          name: 'Mikina Smartie',
+          description:
+            'Príjemná mikina s pohodlným strihom.',
+          cost: 49.90,
+        },
+        {
+          id: 'mikina-b',
+          name: 'Mikina HoloHome',
+          description:
+            'Klasická biela mikina s logom.',
+          cost: 49.90,
+        },
+        {
+          id: 'pohar',
+          name: 'Pohár HoloHome',
+          description:
+            'Sklenený pohár v troch farbách.',
+          cost: 12.90,
+        }
       ],
     });
     console.log('Seeded products');
