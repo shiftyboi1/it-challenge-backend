@@ -111,17 +111,17 @@ Query je v parametroch URL. (viď "page" "role" atď v samotnej URL).
 
 **`POST /api/cart/add`** - Pridaj kus produktu do košíka (alebo zvýš množstvo)
 ```json
-{ "productId": 1 }
+{ "productId": "product-123" }
 ```
 
 **`POST /api/cart/remove`** - Odober kus produktu z košíka
 ```json
-{ "productId": 1 }
+{ "productId": "product-123" }
 ```
 
 **`POST /api/cart/remove-all`** - Odstráň všetky kusy konkrétneho produktu z košíka
 ```json
-{ "productId": 1 }
+{ "productId": "product-123" }
 ```
 
 **`DELETE /api/cart`** - Vyprázdni košík
@@ -156,10 +156,3 @@ Statusy môžu byť len: FULFILLED, CANCELLED, PROCESSING
 - Admin nemôže byť degradovaný inými adminmi
 - Users nemôžu meniť vlastnú rolu
 - Email search je case-insensitive partial match (proste si vyhladaj čo to znamená nebudem to rozpisovať)
-
-## Integrácia s frontendom
-
-- Frontend volá API s `VITE_API_URL` nastaveným na backend, napr. `http://localhost:3000/api`.
-- Produkty: `GET /api/products` poskytuje zoznam produktov používaný v shop-e.
-- Košík a objednávky vyžadujú prihlásenie. Frontend posiela `Authorization: Bearer <token>` po úspešnom logine.
-

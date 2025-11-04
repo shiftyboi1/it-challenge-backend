@@ -16,7 +16,7 @@ module.exports = {
 
       // Check ci produkt vobec existuje
       const product = await prisma.product.findUnique({
-        where: { id: parseInt(productId) },
+        where: { id: productId },
       });
 
       if (!product) {
@@ -30,7 +30,7 @@ module.exports = {
         where: {
           userId_productId: {
             userId: userId,
-            productId: parseInt(productId),
+            productId: productId,
           },
         },
       });
@@ -49,7 +49,7 @@ module.exports = {
         cartItem = await prisma.shoppingCart.create({
           data: {
             userId: userId,
-            productId: parseInt(productId),
+            productId: productId,
             amount: 1,
           },
           include: { product: true },
@@ -79,7 +79,7 @@ module.exports = {
         where: {
           userId_productId: {
             userId: userId,
-            productId: parseInt(productId),
+            productId: productId,
           },
         },
       });
@@ -126,7 +126,7 @@ module.exports = {
         where: {
           userId_productId: {
             userId: userId,
-            productId: parseInt(productId),
+            productId: productId,
           },
         },
       });

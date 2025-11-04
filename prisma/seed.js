@@ -25,26 +25,28 @@ async function main() {
     console.log('Admin user already exists, skipping creation');
   }
 
-  // Seed a couple of products if table is empty
+  // Seed products
   const productCount = await prisma.product.count();
   if (productCount === 0) {
     await prisma.product.createMany({
       data: [
         {
-          name: 'Watch X',
+          id: 'smartie',
+          name: 'Smartie',
           description:
-            'Edge-to-edge display, week-long battery, health sensors, and a minimal UI that doesn’t get in your way.',
-          cost: 199.0,
+            'HoloHome Smartie je AI asistent pre byty a domy, ktorý dohliada na komfort a bezpečie: sleduje teplotu, vlhkosť a kvalitu vzduchu, stráži dym aj únik vody a vie reagovať na pohyb či otvorenie dverí. Všetko vidíš v prehľadnej aplikácii a môžeš nastavovať automatizácie (napr. upozornenia, scénáre úspor). Smartie prináša filozofiu „where innovation meets home“ priamo do tvojho interiéru – jednoducho, spoľahlivo a udržateľne.',
+          cost: 85.0,
         },
         {
-          name: 'Holo Sensor Kit',
+          id: 'enterprise',
+          name: 'Enterprise',
           description:
-            'ESP32 + DHT22 + lux sensor prepojené do HoloHome. Otvorený kód, jednoduché nasadenie, komunitné rozšírenia.',
-          cost: 89.0,
+            'HoloHome Enterprise je komplexný AI „virtuálny domovník“ pre bytové domy. Zabezpečuje hlavný aj vedľajšie vstupy, monitoruje pohyb v interiéri/exteriéri, zberá odpočty vody a tepla a sleduje kvalitu ovzdušia v spoločných priestoroch. Správcom prináša prehľad o zariadeniach a incidentoch, obyvateľom zvyšuje bezpečnosť a komfort a vďaka digitalizácii procesov znižuje prevádzkové náklady. S jednotnou identitou HoloHome pôsobí moderne, dôveryhodne a konzistentne naprieč všetkými materiálmi.',
+          cost: 189.0,
         },
       ],
     });
-    console.log('Seeded sample products');
+    console.log('Seeded products');
   } else {
     console.log('Products already exist, skipping');
   }

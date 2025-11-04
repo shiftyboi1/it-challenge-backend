@@ -16,8 +16,8 @@ module.exports = {
   // Get single product by id (public)
   async getById(req, res, next) {
     try {
-      const id = parseInt(req.params.id);
-      if (!Number.isFinite(id)) {
+      const id = req.params.id;
+      if (!id || typeof id !== 'string') {
         const error = new Error('Invalid product id');
         error.status = 400;
         throw error;
