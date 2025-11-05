@@ -201,4 +201,58 @@ module.exports = {
       next(err);
     }
   },
+
+  // Delete entire order (admin/spravca)
+  async remove(req, res, next) {
+    try {
+      const orderId = parseInt(req.params.id);
+      const existing = await prisma.order.findUnique({ where: { id: orderId } });
+      if (!existing) {
+        const error = new Error('Order not found');
+        error.status = 404;
+        throw error;
+      }
+
+      await prisma.order.delete({ where: { id: orderId } });
+      res.json({ ok: true });
+    } catch (err) {
+      next(err);
+    }
+  },
+
+  // Delete a single order item (admin/spravca)
+  // If it was the last item, the order is deleted automatically.
+  async removeItem(req, res, next) {
+    try {
+      const orderId = parseInt(req.params.orderId);
+      const itemId = parseInt(req.params.itemId);
+
+      const item = await prisma.orderItem.findUnique({ where: { id: itemId } });
+      if (!item || item.orderId !== orderId) {
+        const error = new Error('Order item not found');
+        error.status = 404;
+        throw error;
+      }
+
+      const result = await prisma.$transaction(async (tx) => {
+        // delete the item
+        await tx.orderItem.delete({ where: { id: itemId } });
+
+        // recompute remaining items
+        const remaining = await tx.orderItem.findMany({ where: { orderId } });
+        if (remaining.length === 0) {
+          await tx.order.delete({ where: { id: orderId } });
+          return { deletedOrder: true };
+        }
+
+        const newTotal = remaining.reduce((sum, it) => sum + (it.price * it.quantity), 0);
+        const updated = await tx.order.update({ where: { id: orderId }, data: { total: newTotal } });
+        return { deletedOrder: false, order: updated };
+      });
+
+      res.json(result);
+    } catch (err) {
+      next(err);
+    }
+  },
 };

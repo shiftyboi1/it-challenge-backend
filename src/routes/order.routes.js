@@ -12,5 +12,7 @@ router.get('/:id', requireAuth, orderController.getById); // Getni specific orde
 // Admin/Spravca endpointy
 router.get('/', requireAuth, requireRole(['SPRAVCA', 'ADMIN']), orderController.list); // List orderov
 router.patch('/:id/status', requireAuth, requireRole(['SPRAVCA', 'ADMIN']), orderController.updateStatus); // Zmen status orderu
+router.delete('/:id', requireAuth, requireRole(['SPRAVCA', 'ADMIN']), orderController.remove); // Zmaž objednávku
+router.delete('/:orderId/items/:itemId', requireAuth, requireRole(['SPRAVCA', 'ADMIN']), orderController.removeItem); // Zmaž položku objednávky
 
 module.exports = router;
